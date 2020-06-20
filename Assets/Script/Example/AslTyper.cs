@@ -24,41 +24,20 @@ namespace Script.Example
                 .AddTo(this);
 
             clearHandPose.OnRecognized
-                .Subscribe(_ =>
-                {
-                    Debug.Log($"[{GetType().Name}] clear text");
-                    ClearText();
-                })
+                .Subscribe(_ =>ClearText())
                 .AddTo(this);
             
             backspaceHandPose.OnRecognized
-                .Subscribe(_ =>
-                {
-                    Debug.Log($"[{GetType().Name}] backspace");
-                    Backspace();
-                })
+                .Subscribe(_ => Backspace())
                 .AddTo(this);
 
             spaceHandPose.OnRecognized
-                .Subscribe(_ =>
-                {
-                    Debug.Log($"[{GetType().Name}] space");
-                    Space();
-                })
+                .Subscribe(_ => Space())
                 .AddTo(this);
             
             newlineHandPose.OnRecognized
-                .Subscribe(_ =>
-                {
-                    Debug.Log($"[{GetType().Name}] newline");
-                    Newline();
-                })
+                .Subscribe(_ => Newline())
                 .AddTo(this);
-            
-            // leftHandPoseDetector.DetectedHandPose
-            //     .SkipLatestValueOnSubscribe()
-            //     .Subscribe(OnLeftHandPoseDetected)
-            //     .AddTo(this);
         }
 
         private void OnRightHandPoseDetected(HandPoseData handPose)
@@ -82,8 +61,7 @@ namespace Script.Example
             var t = typedText.text;
             if (t.Length == 0) return;
             
-            t.Remove(t.Length - 1);
-            typedText.text = t;
+            typedText.text = t.Remove(t.Length - 1, 1);;
         }
 
         private void Space()
@@ -95,26 +73,5 @@ namespace Script.Example
         {
             typedText.text += "\n";
         }
-        
-        // private void OnLeftHandPoseDetected(HandPoseData handPose)
-        // {
-        //     var detected = handPose.name;
-        //     switch (detected)
-        //     {
-        //         case "Palm_Open_L" :
-        //             typedText.text = "";
-        //             break;
-        //         case "Palm_Closed_L" :
-        //             var str = typedText.text.Remove(typedText.text.Length - 1);
-        //             typedText.text = str;
-        //             break;
-        //         case "Rock_L" :
-        //             typedText.text += " ";
-        //             break;
-        //         case "OK_L" :
-        //             typedText.text += "\n";
-        //             break;
-        //     }
-        // }
     }
 }

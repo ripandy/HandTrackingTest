@@ -16,26 +16,20 @@ namespace HandPoseDetection
         private void Start()
         {
             Observable.EveryUpdate()
-                .Subscribe(_ =>
-                {
-                    var detectedPose = DetectHandPose();
-                    if (detectedPose != null)
-                        _detectedHandPose.Value = detectedPose;
-                })
+                .Subscribe(_ => DetectHandPose())
                 .AddTo(this);
 
             _detectedHandPose
-                .Where(handPose => handPose != null)
-                .Subscribe(handPose => handPose.Recognized())
-                .AddTo(this);
-            
-            _detectedHandPose
-                .Where(handPose => handPose != null)
-                .Subscribe(handPose => Debug.Log($"[{GetType().Name}] detected hand pose: {handPose.name}"))
+                .SkipLatestValueOnSubscribe()
+                .Subscribe(handPose =>
+                {
+                    handPose.Recognized();
+                    Debug.Log($"[{GetType().Name}] detected hand pose: {handPose.name}");
+                })
                 .AddTo(this);
         }
 
-        private HandPoseData DetectHandPose()
+        private void DetectHandPose()
         {
             var idx = -1;
             var currentMin = Mathf.Infinity;
@@ -52,8 +46,9 @@ namespace HandPoseDetection
             }
 
             if (idx >= 0)
-                return handPoses[idx];
-            return null;
+            {
+                _detectedHandPose.Value = handPoses[idx];
+            }
         }
 
         private float CalculateFingerDistance(OVRSkeleton skeleton, HandPoseData handPose)
