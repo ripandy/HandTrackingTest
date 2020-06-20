@@ -31,7 +31,7 @@ namespace HandPoseDetection
             
             _detectedHandPose
                 .Where(handPose => handPose != null)
-                .Subscribe(handPose => Debug.Log($"detected hand pose: {handPose.name}"))
+                .Subscribe(handPose => Debug.Log($"[{GetType().Name}] detected hand pose: {handPose.name}"))
                 .AddTo(this);
         }
 

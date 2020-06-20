@@ -10,6 +10,7 @@ namespace HandPoseDetection
 #if UNITY_EDITOR
         [SerializeField] private OVRSkeleton fingerSkeleton;
         [SerializeField] private KeyCode keyToBuild = KeyCode.Space;
+        [SerializeField] private string savePath = "Assets/Media/ScriptableObject/HandPose/";
         private static int assetCount;
 
         private void Awake()
@@ -30,7 +31,7 @@ namespace HandPoseDetection
             var newName = $"New Hand Pose {++assetCount}";
             var newHandPose = ScriptableObject.CreateInstance<HandPoseData>();
             
-            AssetDatabase.CreateAsset(newHandPose, $"Assets/ScriptableObject/HandPose/{newName}.asset");
+            AssetDatabase.CreateAsset(newHandPose, $"{savePath}{newName}.asset");
             
             var data = new List<Vector3>();
             var fingerBones = fingerSkeleton.Bones;

@@ -15,14 +15,16 @@ public class KeybladeSpawner : MonoBehaviour
     private const string Paper = "Paper_R";
     private const string Rock = "Rock_R";
 
-    private Pose _onHandPose;
+    private Pose _poseOnHand;
+    private Vector3 _scaleOnHand;
     private const float SpawnDelay = 0.5f;
 
     private HandPoseData _currentHandPose;
 
     private void Awake()
     {
-        _onHandPose = new Pose(keybladeBase.localPosition, keybladeBase.localRotation);
+        _poseOnHand = new Pose(keybladeBase.localPosition, keybladeBase.localRotation);
+        _scaleOnHand = keybladeBase.localScale;
     }
 
     private void Start()
@@ -53,8 +55,11 @@ public class KeybladeSpawner : MonoBehaviour
         spawnEffect.Play(true);
         
         if (spawn)
-            keybladeBase.SetPositionAndRotation(_onHandPose.position, _onHandPose.rotation);
-        keybladeBase.SetParent(spawn ? handTransform : null, !spawn);
+        {
+            keybladeBase.SetPositionAndRotation(_poseOnHand.position, _poseOnHand.rotation);
+            keybladeBase.localScale = _scaleOnHand;
+        }
+        keybladeBase.SetParent(spawn ? handTransform : transform, !spawn);
 
         await UniTask.Delay(TimeSpan.FromSeconds(SpawnDelay));
         
