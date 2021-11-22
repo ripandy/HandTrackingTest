@@ -6,7 +6,7 @@ using UniRx;
 
 public class KeybladeSpawner : MonoBehaviour
 {
-    [SerializeField] private HandPoseDetector handPoseDetector;
+    [SerializeField] private HandFormRecognizeGameEvent _handFormRecognizedGameEvent;
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform keybladeBase;
     [SerializeField] private GameObject keybladeKey;
@@ -19,7 +19,7 @@ public class KeybladeSpawner : MonoBehaviour
     private Vector3 _scaleOnHand;
     private const float SpawnDelay = 0.5f;
 
-    private HandPoseData _currentHandPose;
+    private HandFormData _currentHandForm = HandFormData.none;
 
     private void Awake()
     {
@@ -29,23 +29,24 @@ public class KeybladeSpawner : MonoBehaviour
 
     private void Start()
     {
-        handPoseDetector.DetectedHandPose
+        _handFormRecognizedGameEvent
             .Subscribe(OnPoseDetected)
             .AddTo(this);
     }
 
-    private void OnPoseDetected(HandPoseData detected)
+    private void OnPoseDetected(HandFormData detected)
     {
-        if (_currentHandPose != null)
+        if (detected.name == Rock && _currentHandForm.name != Rock)
         {
-            if (detected.name == Rock && _currentHandPose.name == Paper)
-                SpawnKeyblade(true);
-            else if (detected.name == Paper && _currentHandPose.name == Rock)
-                SpawnKeyblade(false);
-            
-            Debug.Log($"[{GetType().Name}] detected hand pose: {detected.name}, previous hand pose: {_currentHandPose.name}");
+            SpawnKeyblade(true);
         }
-        _currentHandPose = detected;
+        else if (detected.name == Paper && _currentHandForm.name != Paper)
+        {
+            SpawnKeyblade(false);
+        }
+        
+        Debug.Log($"[{GetType().Name}] detected hand form: {detected.name}, previous hand form: {_currentHandForm.name}");
+        _currentHandForm = detected;
     }
 
     private async void SpawnKeyblade(bool spawn)

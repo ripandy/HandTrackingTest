@@ -1,4 +1,6 @@
-﻿using HandPoseDetection;
+﻿using System;
+using HandPoseDetection;
+using Kadinche.Kassets.EventSystem;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -7,45 +9,54 @@ namespace Script.Example
 {
     public class AslTyper : MonoBehaviour
     {
-        [SerializeField] private HandPoseDetector rightHandPoseDetector;
-        [SerializeField] private HandPoseData clearHandPose;
-        [SerializeField] private HandPoseData backspaceHandPose;
-        [SerializeField] private HandPoseData spaceHandPose;
-        [SerializeField] private HandPoseData newlineHandPose;
+        [SerializeField] private GameEvent<HandFormData> _handFormRecognizedGameEvent;
+        [SerializeField] private string _clearHandFormName;
+        [SerializeField] private string _backspaceHandFormName;
+        [SerializeField] private string _spaceHandFormName;
+        [SerializeField] private string _newlineHandFormName;
         [SerializeField] private TMP_Text typedText;
 
         private const string AslPrefix = "ASL";
 
         private void Start()
         {
-            rightHandPoseDetector.DetectedHandPose
-                .SkipLatestValueOnSubscribe()
-                .Subscribe(OnRightHandPoseDetected)
-                .AddTo(this);
-
-            clearHandPose.OnRecognized
-                .Subscribe(_ =>ClearText())
-                .AddTo(this);
-            
-            backspaceHandPose.OnRecognized
-                .Subscribe(_ => Backspace())
-                .AddTo(this);
-
-            spaceHandPose.OnRecognized
-                .Subscribe(_ => Space())
-                .AddTo(this);
-            
-            newlineHandPose.OnRecognized
-                .Subscribe(_ => Newline())
+            (_handFormRecognizedGameEvent as IObservable<HandFormData>)
+                .Skip(1)
+                .Subscribe(OnHandFormRecognized)
                 .AddTo(this);
         }
 
-        private void OnRightHandPoseDetected(HandPoseData handPose)
+        private void OnHandFormRecognized(HandFormData handForm)
         {
-            var splitted = handPose.name.Split('_');
-            if (splitted.Length == 0 || !splitted[0].Equals(AslPrefix)) return;
+            var handFormName = handForm.name;
+            if (handFormName.Equals(_clearHandFormName))
+            {
+                ClearText();
+            }
+            else if (handFormName.Equals(_backspaceHandFormName))
+            {
+                Backspace();
+            }
+            else if (handFormName.Equals(_spaceHandFormName))
+            {
+                Space();
+            }
+            else if (handFormName.Equals(_newlineHandFormName))
+            {
+                Newline();
+            }
+            else
+            {
+                OnRightHandFormRecognized(handFormName);
+            }
+        }
 
-            var letter = splitted[1];
+        private void OnRightHandFormRecognized(string handFormName)
+        {
+            var split = handFormName.Split('_');
+            if (split.Length == 0 || !split[0].Equals(AslPrefix)) return;
+
+            var letter = split[1];
             
             Debug.Log($"[{GetType().Name}] letter: {letter}");
             typedText.text += letter;

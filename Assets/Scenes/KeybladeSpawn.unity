@@ -393,7 +393,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4b9044e0d02fc439450efe793664e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handPoseDetector: {fileID: 1528860863}
+  _handFormRecognizedGameEvent: {fileID: 11400000, guid: 0e4dbd1c1f517f541be141c9f54b7a19,
+    type: 2}
   handTransform: {fileID: 1456070933}
   keybladeBase: {fileID: 121529603}
   keybladeKey: {fileID: 1311595284}
@@ -554,16 +555,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835e735ca71bf78459fb2cababd74112, type: 3}
---- !u!114 &1128770616 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114567484643301796, guid: 835e735ca71bf78459fb2cababd74112,
+--- !u!1 &897628592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1870938896605422, guid: 835e735ca71bf78459fb2cababd74112,
     type: 3}
-  m_PrefabInstance: {fileID: 1456070932}
+  m_PrefabInstance: {fileID: 897628591}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &897628593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897628592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2609c54f376cffc4da1ab9401cc1a36f, type: 3}
+  m_Script: {fileID: 11500000, guid: 67123ce633b64e939d1b0dda5eec85a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1270735853
@@ -577,12 +584,12 @@ GameObject:
   - component: {fileID: 1270735854}
   - component: {fileID: 1270735855}
   m_Layer: 0
-  m_Name: HandPoseBuilder
+  m_Name: OvrHandFormDataBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1270735854
 Transform:
   m_ObjectHideFlags: 0
@@ -607,12 +614,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1270735853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57cb8d2b2b184ef3b445c5e73f6a1236, type: 3}
+  m_Script: {fileID: 11500000, guid: e0b7121f167543ee98bf223325f2e8ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fingerSkeleton: {fileID: 1128770616}
+  _runtimeHandFormCollection: {fileID: 11400000, guid: 078e3d8c7a5fce44dacf81d2a223b953,
+    type: 2}
+  _ovrHandSkeleton: {fileID: 1456070935}
   keyToBuild: 32
-  savePath: Assets/Media/ScriptableObject/HandPose/
 --- !u!1 &1311595284 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2010031061850176133, guid: 781d397808b4c1e4fb1d944bce3a3a7a,
@@ -702,6 +710,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1456070932}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1456070934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1870938896605422, guid: 835e735ca71bf78459fb2cababd74112,
+    type: 3}
+  m_PrefabInstance: {fileID: 1456070932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1456070935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456070934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67123ce633b64e939d1b0dda5eec85a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1507592641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,7 +816,7 @@ GameObject:
   - component: {fileID: 1528860862}
   - component: {fileID: 1528860863}
   m_Layer: 0
-  m_Name: HandPoseDetector
+  m_Name: OvrHandFormRecognizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -820,14 +846,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1528860861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 094eb074db6457b4bb8d1a135cc135ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fb77d47d505494c8277be50eec27563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fingerSkeleton: {fileID: 1128770616}
-  sensitivity: 0.02
-  handPoses:
-  - {fileID: 11400000, guid: 70fef990cd357a844a8b8e883759fa6f, type: 2}
-  - {fileID: 11400000, guid: 2fd6df21c6d6e22418c2c689a1c998f2, type: 2}
-  - {fileID: 11400000, guid: b1fe84c1456627747bf7fbabfdb3c9cc, type: 2}
-  - {fileID: 11400000, guid: 319e4ad77eac51e45beb8db1d05046ab, type: 2}
-  - {fileID: 11400000, guid: 4ac8355e3ae9a534ba06ca7726aaae1d, type: 2}
+  _sensitivity: 0.03
+  _ovrHandSkeleton: {fileID: 1456070935}
+  _handFormCollection: {fileID: 11400000, guid: 078e3d8c7a5fce44dacf81d2a223b953,
+    type: 2}
+  _detectedHandFormGameEvent: {fileID: 11400000, guid: 0e4dbd1c1f517f541be141c9f54b7a19,
+    type: 2}
