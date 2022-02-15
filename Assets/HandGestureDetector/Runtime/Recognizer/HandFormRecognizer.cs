@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using HandPoseDetection;
 using UniRx;
 using UnityEngine;
 
-namespace HandPoseDetection
+namespace HandGestureDetector
 {
     public abstract class HandFormRecognizer : MonoBehaviour
     {
         protected IHandSkeleton handSkeleton;
-        protected IList<HandFormData> handForms;
-        protected IObserver<HandFormData> detectedHandFormObserver;
+        protected IList<HandForm> handForms;
+        protected IObserver<HandForm> detectedHandFormObserver;
         
-        [Range(0.001f, 0.05f)]
+        [Range(0.001f, 0.1f)]
         [SerializeField] private float _sensitivity = 0.02f;
 
-        private void Start()
+        private void Start() => Initialize();
+
+        protected virtual void Initialize()
         {
             Observable.EveryUpdate()
                 .Subscribe(_ => DetectHandPose())
-                .AddTo(this);   
+                .AddTo(this);
         }
 
         private void DetectHandPose()
@@ -45,7 +48,7 @@ namespace HandPoseDetection
 
         private float CalculateFingerDistance(HandFormData handForm)
         {
-            if (handSkeleton.Bones.Length != handForm.fingerData.Length)
+            if (handSkeleton.Bones.Length != handForm.fingerBones.Length)
             {
                 Debug.LogError($"Hand Form {handForm.name} is not compatible with active hand skeleton.");
                 return Mathf.Infinity;
@@ -59,7 +62,7 @@ namespace HandPoseDetection
             {
                 var currentData =
                     handSkeleton.Root.InverseTransformPoint(handSkeleton.Bones[i].position);
-                var distance = Vector3.Distance(currentData, handForm.fingerData[i]);
+                var distance = Vector3.Distance(currentData, handForm.fingerBones[i]);
 
                 discard = distance > _sensitivity;
                 if (discard)
