@@ -1,6 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using HandPoseDetection;
+using HandGestureDetector;
 using UnityEngine;
 using UniRx;
 

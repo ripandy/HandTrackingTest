@@ -1,5 +1,5 @@
 ﻿using System;
-using HandPoseDetection;
+using HandGestureDetector;
 using Kadinche.Kassets.EventSystem;
 using TMPro;
 using UniRx;

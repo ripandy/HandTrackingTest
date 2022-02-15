@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace HandPoseDetection.OvrHandFormRecognizer
+namespace HandGestureDetector.OvrHandFormRecognizer
 {
     [RequireComponent(typeof(OVRSkeleton))]
     public class OvrHandSkeleton : MonoBehaviour, IHandSkeleton

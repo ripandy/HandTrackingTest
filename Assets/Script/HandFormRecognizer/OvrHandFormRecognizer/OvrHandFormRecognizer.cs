@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Kadinche.Kassets;
+using UnityEngine;
 
-namespace HandPoseDetection.OvrHandFormRecognizer
+namespace HandGestureDetector.OvrHandFormRecognizer
 {
     public class OvrHandFormRecognizer : HandFormRecognizer
     {
@@ -13,6 +14,12 @@ namespace HandPoseDetection.OvrHandFormRecognizer
             handSkeleton = _ovrHandSkeleton;
             handForms = _handFormCollection;
             detectedHandFormObserver = _detectedHandFormGameEvent;
+        }
+
+        protected override void Initialize()
+        {
+            _handFormCollection.LoadFromJson();
+            base.Initialize();
         }
     }
 }

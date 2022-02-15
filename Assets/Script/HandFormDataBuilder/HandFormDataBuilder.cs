@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-namespace HandPoseDetection
+namespace HandGestureDetector
 {
     public abstract class HandFormDataBuilder : MonoBehaviour
     {
         protected IHandSkeleton handSkeleton;
         protected IList<HandFormData> handForms;
-        protected IObservable<object> addNewHandFormCommandObservable;
+        protected IObservable<object> addNewHandFormInputObservable;
 
         private void Start() => Initialize();
 
         protected virtual void Initialize()
         {
-            addNewHandFormCommandObservable.Subscribe(_ => AddNewHandForm())
+            addNewHandFormInputObservable
+                .Subscribe(_ => AddNewHandForm())
                 .AddTo(this);
         }
 
@@ -32,7 +33,7 @@ namespace HandPoseDetection
             var newHandPose = new HandFormData
             {
                 name = $"HandForm_{handForms.Count}",
-                fingerData = fingerData.ToArray()
+                fingerBones = fingerData.ToArray()
             };
 
             handForms.Add(newHandPose);

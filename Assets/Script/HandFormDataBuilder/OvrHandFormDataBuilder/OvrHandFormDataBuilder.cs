@@ -1,9 +1,9 @@
-﻿using HandPoseDetection.OvrHandFormRecognizer;
+﻿using HandGestureDetector.OvrHandFormRecognizer;
 using Kadinche.Kassets;
 using UniRx;
 using UnityEngine;
 
-namespace HandPoseDetection.OvrHandFormDataBuilder
+namespace HandGestureDetector.OvrHandFormDataBuilder
 {
     public class OvrHandFormDataBuilder : HandFormDataBuilder
     {
@@ -17,12 +17,13 @@ namespace HandPoseDetection.OvrHandFormDataBuilder
         {
             handForms = _runtimeHandFormCollection.Value;
             handSkeleton = _ovrHandSkeleton;
-            addNewHandFormCommandObservable = _addNewHandFormInputProvider;
+            addNewHandFormInputObservable = _addNewHandFormInputProvider;
         }
 
         protected override void Initialize()
         {
             base.Initialize();
+
             Observable.EveryUpdate()
                 .Where(_ => Input.GetKeyDown(keyToBuild))
                 .Subscribe(_ => _addNewHandFormInputProvider.OnNext(default))
